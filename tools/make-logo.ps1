@@ -1,6 +1,7 @@
 # Renders the MD Advisory monogram logo to PNG (square, LinkedIn-ready)
 param(
   [int]$Size = 1024,
+  [double]$MarkScale = 1.0,  # 1.0 = ring nearly fills the square; 0.5 = half-size mark with padding
   [string]$OutFile = "C:\Users\mdass\Claude\Code\MDA\assets\mda-logo-1024.png"
 )
 
@@ -31,7 +32,7 @@ $goldLight = [System.Drawing.Color]::FromArgb(255, 227, 200, 120)
 $goldDeep = [System.Drawing.Color]::FromArgb(255, 176, 140, 46)
 
 # outer ring
-$scale = $Size / 1024.0
+$scale = ($Size / 1024.0) * $MarkScale
 $ringW = 24 * $scale
 $r = 420 * $scale
 $cx = $Size / 2.0
