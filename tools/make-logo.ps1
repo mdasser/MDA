@@ -2,6 +2,7 @@
 param(
   [int]$Size = 1024,
   [double]$MarkScale = 1.0,  # 1.0 = ring nearly fills the square; 0.5 = half-size mark with padding
+  [switch]$Transparent,      # no navy background; mark floats on alpha
   [string]$OutFile = "C:\Users\mdass\Claude\Code\MDA\assets\mda-logo-1024.png"
 )
 
@@ -17,15 +18,19 @@ $g = [System.Drawing.Graphics]::FromImage($bmp)
 $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
 $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAlias
 
-# background: deep navy with a soft radial highlight upper-left
+# background: deep navy with a soft radial highlight (or fully transparent)
 $navy = [System.Drawing.Color]::FromArgb(255, 8, 17, 32)
-$g.Clear($navy)
-$path = New-Object System.Drawing.Drawing2D.GraphicsPath
-$path.AddEllipse(-0.4 * $Size, -0.4 * $Size, 1.3 * $Size, 1.3 * $Size)
-$radial = New-Object System.Drawing.Drawing2D.PathGradientBrush($path)
-$radial.CenterColor = [System.Drawing.Color]::FromArgb(255, 18, 35, 63)
-$radial.SurroundColors = @($navy)
-$g.FillRectangle($radial, 0, 0, $Size, $Size)
+if ($Transparent) {
+  $g.Clear([System.Drawing.Color]::Transparent)
+} else {
+  $g.Clear($navy)
+  $path = New-Object System.Drawing.Drawing2D.GraphicsPath
+  $path.AddEllipse(-0.4 * $Size, -0.4 * $Size, 1.3 * $Size, 1.3 * $Size)
+  $radial = New-Object System.Drawing.Drawing2D.PathGradientBrush($path)
+  $radial.CenterColor = [System.Drawing.Color]::FromArgb(255, 18, 35, 63)
+  $radial.SurroundColors = @($navy)
+  $g.FillRectangle($radial, 0, 0, $Size, $Size)
+}
 
 $gold = [System.Drawing.Color]::FromArgb(255, 201, 162, 63)
 $goldLight = [System.Drawing.Color]::FromArgb(255, 227, 200, 120)
