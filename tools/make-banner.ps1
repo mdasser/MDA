@@ -38,7 +38,7 @@ $bg = New-Object System.Drawing.Drawing2D.LinearGradientBrush($bgRect, $navy, $n
 $g.FillRectangle($bg, 0, 0, $W, $H)
 
 $glowPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-$glowPath.AddEllipse(770, -90, 400, 400)
+$glowPath.AddEllipse(700, -90, 400, 400)
 $glow = New-Object System.Drawing.Drawing2D.PathGradientBrush($glowPath)
 $glow.CenterColor = [System.Drawing.Color]::FromArgb(70, 62, 142, 221)
 $glow.SurroundColors = @([System.Drawing.Color]::FromArgb(0, 8, 17, 32))
@@ -131,12 +131,13 @@ function Draw-GearLabeled($g, $cx, $cy, $hubR, $color, $iconColor, $label, $kind
 # faint orbit ring behind gears
 $orbit = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(50, 201, 162, 63), 1)
 $orbit.DashStyle = [System.Drawing.Drawing2D.DashStyle]::Dot
-$g.DrawEllipse($orbit, 850, -10, 220, 220)
+$g.DrawEllipse($orbit, 780, -10, 220, 220)
 
 # trio: hub r=42, tooth tips ~54, centers ~96-100 apart for a tight interlock
-Draw-GearLabeled $g 962 54 42 $gold  $goldLight "PEOPLE"     "people"  0
-Draw-GearLabeled $g 912 136 42 $steel $steelIcon "PROCESS"    "process" 15
-Draw-GearLabeled $g 1012 136 42 $blue  $blueIcon  "TECHNOLOGY" "tech"    0
+# kept >=130px clear of the right edge so LinkedIn's responsive crop never clips TECHNOLOGY
+Draw-GearLabeled $g 892 54 42 $gold  $goldLight "PEOPLE"     "people"  0
+Draw-GearLabeled $g 842 136 42 $steel $steelIcon "PROCESS"    "process" 15
+Draw-GearLabeled $g 942 136 42 $blue  $blueIcon  "TECHNOLOGY" "tech"    0
 
 # ---- headline (text zone x 330-820; bottom-left stays quiet for logo) ----
 function Draw-Text($g, $text, $font, $brush, $x, $y) {
